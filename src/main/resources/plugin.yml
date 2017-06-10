@@ -1,0 +1,5 @@
+main: flicker.minecraft.skyfall.Main
+name: Skyfall
+version: 0.1
+author: Flicker
+description: Teleports players who fall into the void of one world into the sky of another.
