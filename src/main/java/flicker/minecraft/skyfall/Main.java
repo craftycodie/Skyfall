@@ -4,13 +4,9 @@ package flicker.minecraft.skyfall;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
@@ -39,10 +35,10 @@ public class Main extends JavaPlugin implements Listener {
 	public void onDamageTaken(EntityDamageEvent event)
 	{
 		//If a player took damage...
-		if (event.getEntityType() != EntityType.PLAYER) return;
+		//if (event.getEntityType() != EntityType.PLAYER) return;
 		
 		//Find the player...
-		Player player = (Player)event.getEntity();
+		Entity entity = event.getEntity();
 		
 		//player.sendMessage("Skyfall Debug: Took Damage");
 		
@@ -51,11 +47,11 @@ public class Main extends JavaPlugin implements Listener {
 		{
 			//player.sendMessage("Skyfall Debug: Took Void Damage");
 			//If the player is below 0 y.
-			if(player.getLocation().getY() < 0)
+			if(entity.getLocation().getY() < 0)
 			{
 				//player.sendMessage("Skyfall Debug: In Void");
 				//Find the desination world name in the config.
-				String destinationName = config.getString(player.getWorld().getName());
+				String destinationName = config.getString(entity.getWorld().getName());
 				if(destinationName == null) return; //No destination.
 				
 				//player.sendMessage("Skyfall Debug: Found destination" + destinationName);
@@ -64,14 +60,14 @@ public class Main extends JavaPlugin implements Listener {
 				World destinationWorld = Bukkit.getServer().getWorld(destinationName);
 				
 				//Construct the destination location (new world, XYZ pos).
-				Location destinationLocation = new Location(destinationWorld, player.getLocation().getX(), 500, player.getLocation().getZ());
+				Location destinationLocation = new Location(destinationWorld, entity.getLocation().getX(), 500, entity.getLocation().getZ());
 				
 				//Teleport the player to the new world.
 				//This doesn't actually teleport them to the sky, presumably because changing dimension moves them to the lowest clear block.
-				player.teleport(destinationLocation);
+				entity.teleport(destinationLocation);
 				
 				//This time, they're already in the new world, so they should go to the sky!
-				player.teleport(destinationLocation);
+				entity.teleport(destinationLocation);
 				
 				//Make sure they don't actually take damage yet.
 				event.setCancelled(true);
